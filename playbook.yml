@@ -1,0 +1,24 @@
+---
+- name: run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  serial: 1
+  tasks:
+
+  - name: pulls certificate information from HashiCorp Vault
+    command: hostname
+
+  - debug:
+      msg: "{{ lookup('hashi_vault', 'secret=sw/jenkins/pki:key token=root url=http://127.0.0.1:8200') }}"
+
+#  - name: Start the Jenkins container
+#    docker_container:
+#      name: Jenkins
+#      image: jenkins:local
+#      state: started
+#      detach: yes
+#      volumes:
+#        - "jenkins_home:/var/jenkins_home"
+#      ports:
+#       - "8080:8080"
